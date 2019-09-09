@@ -1,0 +1,21 @@
+{
+    "name": "pmikle/checkhttpcodes",
+    "description": "check Http Codes",
+    "type": "project",
+    "require": {
+        "symfony/console": "^4.3",
+        "ext-curl": "*"
+    },
+    "authors": [
+        {
+            "name": "Mikle Popov",
+            "email": "miklepopov@gmail.com"
+        }
+    ],
+    "minimum-stability": "alpha",
+    "autoload": {
+        "psr-4": {
+            "App\\": "classes"
+        }
+    }
+}
