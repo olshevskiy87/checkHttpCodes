@@ -61,7 +61,7 @@ class Check extends Command
             exit(0);
         } else {
             $output->writeln('there is a problem');
-            exit(0);
+            exit(1);
         }
     }
 
