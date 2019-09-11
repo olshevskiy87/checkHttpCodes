@@ -9,11 +9,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use App\Check\File;
 
+include_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config.php';
+
 class Check extends Command
 {
-    public static $defaultFile = 'urls.txt';
-    public static $defaultMethod = 'get';
-    public static $availableMethods = ['get', 'post'];
+    public static $availableMethods = ['GET', 'POST'];
 
     protected function configure()
     {
@@ -29,17 +29,17 @@ class Check extends Command
     {
         $start = microtime(true);
         $expectedCode = (int)$input->getArgument('code');
-        $file = $input->getArgument('urls') ?? self::$defaultFile;
+        $file = $input->getArgument('urls') ?? DEFAULT_FILE;
 
         try {
-            $method = $input->getArgument('method') ?? self::$defaultMethod;
+            $method = $input->getArgument('method') ?? DEFAULT_HTTP_METHOD;
             if (!in_array($method, self::$availableMethods)) {
                 throw new \Exception('http method ' . $method . ' not available');
             }
             $urls = $this->getUrls($file);
             $network = new Network();
             $curlsInstance = $network->getCurlInstances($urls);
-            $results = $network->execCurlInstances($curlsInstance);
+            $results = $network->execAll($curlsInstance);
         } catch (\Exception $e) {
             $output->writeln('error: '. $e->getMessage());
             exit(1);

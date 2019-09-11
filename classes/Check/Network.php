@@ -2,6 +2,8 @@
 
 namespace App\Check;
 
+use App\Commands\Check;
+
 class Network
 {
     public function __construct()
@@ -52,7 +54,17 @@ class Network
         return $ch;
     }
 
-    public function execCurlInstances(array $instances)
+    public function execAll(array $instances): array
+    {
+        $chunks = array_chunk($instances, CHUNK_SIZE, true);
+        $results = [];
+        foreach ($chunks as $chunk) {
+            $results = array_merge($results, $this->execChunk($chunk));
+        }
+        return $results;
+    }
+
+    public function execChunk(array $instances): array
     {
         $results = [];
         $mh = curl_multi_init();
